@@ -1,0 +1,20 @@
+@keyframes glowing {
+    0% { filter: brightness(100%); }
+    50% { filter: brightness(125%); }
+    100% { filter: brightness(100%); }
+}
+@keyframes rotate {
+    0% { rotate: 0; }
+    100% { rotate: 360deg; }
+}
+
+img[src="darmstadtium-gear-icon.svg"]
+{
+    animation: glowing 4s infinite, rotate 36s infinite linear;
+}
+
+body
+{
+    margin: 0;
+    padding: 0;
+}

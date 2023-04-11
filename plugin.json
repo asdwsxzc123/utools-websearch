@@ -1,11 +1,55 @@
 {
   "main": "index.html",
-  "logo": "logo.png",
+  "logo": "public/darmstadtium-gear-icon.png",
+  "preload": "preload.js",
+
+  "development": {
+    "main": "http://localhost:5173/"
+  },
+
   "features": [
     {
-      "code": "d",
-      "explain": "Darmstadtium Gear",
-      "cmds":[""]
+      "code": "search-by-default",
+      "explain": "使用默认搜索引擎, 搜索指定关键字",
+      "cmds": [
+        {
+          "type": "over",
+          "label": "\uD86D\uDFFC齿轮 - 直接搜索",
+          "match": "*",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      ]
+    },
+    {
+      "code": "search-by-select",
+      "explain": "手动选择搜索引擎, 搜索指定关键字",
+      "cmds": [
+        {
+          "type": "over",
+          "label": "\uD86D\uDFFC齿轮 - 手动搜索",
+          "match": "*",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      ]
+    },
+    {
+      "code": "search-config",
+      "explain": "配置搜索引擎列表",
+      "cmds": [
+        {
+          "type": "regex",
+          "label": "配置\uD86D\uDFFC齿轮",
+          "match": ".*config.*",
+          "minLength": 6,
+          "maxLength": 12
+        }
+      ]
     }
-  ]
+  ],
+
+  "pluginSetting": {
+    "single": false
+  }
 }

@@ -20,14 +20,14 @@ const dbGetAll = utools.db.allDocs
 const dbPut = utools.db.put
 const dbRemove = utools.db.remove
 
-const FUNCTIONS = {
+const Database = {
     getDefaultGearId()
     {
         return dbGet(KeyDefaultGearId).data
     },
     getDefaultGear()
     {
-        const defaultGearId = FUNCTIONS.getDefaultGearId()
+        const defaultGearId = Database.getDefaultGearId()
     },
     setDefaultGearId(gearId)
     {},
@@ -60,6 +60,6 @@ const FUNCTIONS = {
         return dbGetAll(PrefGearId)
     },
 }
-for(const key in FUNCTIONS)
-    window[key] = FUNCTIONS[key]
+
+window.Database = Database
 
