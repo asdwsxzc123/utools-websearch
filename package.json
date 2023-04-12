@@ -1,6 +1,12 @@
 {
   "name": "darmstadtium-gear",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "a utools plugin allow you open search engine by keywords quickly",
+  "keywords": ["utools"],
+  "homepage": "https://github.com/FirokOtaku/DarmstadtiumGear",
+  "license": "GPL-3.0-only",
+  "author": "Firok <firok@qq.com> (https://github.com/FirokOtaku)",
+  "repository": "github:FirokOtaku/DarmstadtiumGear",
   "private": true,
   "scripts": {
     "dev": "vite",

@@ -14,7 +14,7 @@
       "cmds": [
         {
           "type": "over",
-          "label": "\uD86D\uDFFC齿轮 - 直接搜索",
+          "label": "直接搜索",
           "match": "*",
           "minLength": 1,
           "maxLength": 128
@@ -27,7 +27,7 @@
       "cmds": [
         {
           "type": "over",
-          "label": "\uD86D\uDFFC齿轮 - 手动搜索",
+          "label": "手动搜索",
           "match": "*",
           "minLength": 1,
           "maxLength": 128
@@ -39,9 +39,9 @@
       "explain": "配置搜索引擎列表",
       "cmds": [
         {
-          "type": "regex",
+          "type": "over",
           "label": "配置\uD86D\uDFFC齿轮",
-          "match": ".*config.*",
+          "match": "config",
           "minLength": 6,
           "maxLength": 12
         }

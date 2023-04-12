@@ -1,6 +1,6 @@
 @keyframes glowing {
     0% { filter: brightness(100%); }
-    50% { filter: brightness(125%); }
+    50% { filter: brightness(130%); }
     100% { filter: brightness(100%); }
 }
 @keyframes rotate {
@@ -10,11 +10,90 @@
 
 img[src="darmstadtium-gear-icon.svg"]
 {
-    animation: glowing 4s infinite, rotate 36s infinite linear;
+    animation: glowing 4s infinite, rotate 28s infinite linear;
 }
 
 body
 {
     margin: 0;
     padding: 0;
+}
+
+.tooltip.tiny-gap
+{
+    transform: translate(-50%, calc(-100% - 4px))
+}
+.tooltip.small-gap
+{
+    transform: translate(-50%, calc(-100% - 8px))
+}
+.tooltip.gap, .tooltip.medium-gap
+{
+    transform: translate(-50%, calc(-100% - 16px))
+}
+.tooltip.large-gap
+{
+    transform: translate(-50%, calc(-100% - 24px))
+}
+
+.tooltip.bottom.tiny-gap
+{
+    transform: translate(-50%, calc(100% + 4px));
+}
+.tooltip.bottom.small-gap
+{
+    transform: translate(-50%, calc(100% + 8px));
+}
+.tooltip.bottom.gap, .tooltip.bottom.medium-gap
+{
+    transform: translate(-50%, calc(100% + 16px));
+}
+.tooltip.bottom.large-gap
+{
+    transform: translate(-50%, calc(100% + 4px));
+}
+
+.tooltip.right.tiny-gap
+{
+    transform: translate(calc(100% + 4px), -50%);
+}
+.tooltip.right.small-gap
+{
+    transform: translate(calc(100% + 8px), -50%);
+}
+.tooltip.right.gap, .tooltip.right.medium-gap
+{
+    transform: translate(calc(100% + 16px), -50%);
+}
+.tooltip.right.large-gap
+{
+    transform: translate(calc(100% + 24px), -50%);
+}
+
+.tooltip.left.tiny-gap
+{
+    transform: translate(calc(-100% - 4px), -50%);
+}
+.tooltip.left.small-gap
+{
+    transform: translate(calc(-100% - 8px), -50%);
+}
+.tooltip.left.gap, .tooltip.left.medium-gap
+{
+    transform: translate(calc(-100% - 16px), -50%);
+}
+.tooltip.left.large-gap
+{
+    transform: translate(calc(-100% - 24px), -50%);
+}
+
+.tooltip.fade
+{
+    display: flex;
+    transition: opacity 0.25s ease;
+    opacity: 0;
+}
+*:hover > .tooltip.fade
+{
+    opacity: 1;
 }
