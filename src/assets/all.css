@@ -8,15 +8,15 @@
     100% { rotate: 360deg; }
 }
 
-img[src="darmstadtium-gear-icon.svg"]
-{
-    animation: glowing 4s infinite, rotate 28s infinite linear;
-}
-
 body
 {
     margin: 0;
     padding: 0;
+    user-select: none;
+}
+input
+{
+    user-select: auto;
 }
 
 .tooltip.tiny-gap

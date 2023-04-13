@@ -1,6 +1,6 @@
 {
   "name": "darmstadtium-gear",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "a utools plugin allow you open search engine by keywords quickly",
   "keywords": ["utools"],
   "homepage": "https://github.com/FirokOtaku/DarmstadtiumGear",
@@ -10,7 +10,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node utool-assets.js",
     "preview": "vite preview"
   },
   "dependencies": {

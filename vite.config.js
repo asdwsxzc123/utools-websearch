@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "./",
   plugins: [vue()],
   resolve: {
     alias: {
@@ -12,6 +13,7 @@ export default defineConfig({
     }
   },
   define: {
-    AppVersion: JSON.stringify(process.env.npm_package_version)
+    WindowAppVersion: JSON.stringify(process.env.npm_package_version),
+    WindowEnableDebug: false,
   },
 })

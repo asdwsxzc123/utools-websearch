@@ -8,6 +8,12 @@ const outPlugin = utools?.outPlugin
 const onPluginEnter = utools?.onPluginEnter
 const shellOpenExternal = utools?.shellOpenExternal
 
+const showSaveDialog = utools?.showSaveDialog
+const showOpenDialog = utools?.showOpenDialog
+const pathDefault = utools?.getPath('desktop')
+
+const fs = require('fs')
+
 window.WindowDatabaseApi = { dbGet, dbGetAll, dbPut, dbRemove, }
 window.WindowUtoolsApi = { outPlugin, onPluginEnter, shellOpenExternal, }
-
+window.WindowFsApi = { pathDefault, showSaveDialog, showOpenDialog, fsRead: fs.readFileSync, fsWrite: fs.writeFileSync }

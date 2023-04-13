@@ -1,8 +1,12 @@
 <style scoped>
+
 </style>
 
 <template>
-	<img class="ds-icon" src="darmstadtium-gear-icon.svg" alt="icon" :style="styleIcon">
+	<img class="ds-icon"
+	     src="/darmstadtium-gear-icon.svg"
+	     style="animation: glowing 4s infinite, rotate 28s infinite linear;"
+	     alt="icon" :style="styleIcon">
 </template>
 
 <script setup>

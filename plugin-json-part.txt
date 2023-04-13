@@ -1,0 +1,13 @@
+{
+  "code": "search-by-select",
+  "explain": "手动选择搜索引擎, 搜索指定关键字",
+  "cmds": [
+    {
+      "type": "over",
+      "label": "手动搜索",
+      "match": "*",
+      "minLength": 1,
+      "maxLength": 128
+    }
+  ]
+},

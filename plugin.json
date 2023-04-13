@@ -1,6 +1,6 @@
 {
   "main": "index.html",
-  "logo": "public/darmstadtium-gear-icon.png",
+  "logo": "darmstadtium-gear-icon.png",
   "preload": "preload.js",
 
   "development": {
@@ -15,19 +15,6 @@
         {
           "type": "over",
           "label": "直接搜索",
-          "match": "*",
-          "minLength": 1,
-          "maxLength": 128
-        }
-      ]
-    },
-    {
-      "code": "search-by-select",
-      "explain": "手动选择搜索引擎, 搜索指定关键字",
-      "cmds": [
-        {
-          "type": "over",
-          "label": "手动搜索",
           "match": "*",
           "minLength": 1,
           "maxLength": 128
@@ -50,6 +37,6 @@
   ],
 
   "pluginSetting": {
-    "single": false
+    "single": true
   }
 }
