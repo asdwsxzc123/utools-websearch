@@ -11,7 +11,7 @@
 
 <template>
 	<div id="panel-operation" class="center-align">
-		<button class="extend square black-text bold"
+		<button class="extend square black-text bold small-elevate"
 		        data-ui="#modal-about"
 		        @click="emit('click-about')"
 		        style="background-color: #18b1d2">
@@ -19,7 +19,7 @@
 			<span>𫟼齿轮</span>
 		</button>
 
-		<button class="extend square bold indigo"
+		<button class="extend square bold indigo small-elevate"
 		        data-ui="#modal-gear-editor"
 		        @click="emit('click-add-gear')">
 			<i>add</i>

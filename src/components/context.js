@@ -110,5 +110,7 @@ const showOpenDialog = isUtoolsContext ? WindowFsApi.showOpenDialog : EmptyFunct
 
 const writeFile = isUtoolsContext ? WindowFsApi.fsWrite : EmptyFunction
 const readFile = isUtoolsContext ? WindowFsApi.fsRead : EmptyFunction
+const existFile = isUtoolsContext ? WindowFsApi.fsExist : EmptyFunction
+const deleteFile = isUtoolsContext ? WindowFsApi.fsDelete : EmptyFunction
 const pathDefault = isUtoolsContext ? WindowFsApi.pathDefault : './'
-export const Fs = { pathDefault, showSaveDialog, showOpenDialog, writeFile, readFile, }
+export const Fs = { pathDefault, showSaveDialog, showOpenDialog, existFile, deleteFile, writeFile, readFile, }

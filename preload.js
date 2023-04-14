@@ -16,4 +16,10 @@ const fs = require('fs')
 
 window.WindowDatabaseApi = { dbGet, dbGetAll, dbPut, dbRemove, }
 window.WindowUtoolsApi = { outPlugin, onPluginEnter, shellOpenExternal, }
-window.WindowFsApi = { pathDefault, showSaveDialog, showOpenDialog, fsRead: fs.readFileSync, fsWrite: fs.writeFileSync }
+window.WindowFsApi = {
+    pathDefault, showSaveDialog, showOpenDialog,
+    fsRead: fs.readFileSync,
+    fsWrite: fs.writeFileSync,
+    fsExist: fs.existsSync,
+    fsDelete: fs.rmSync,
+}

@@ -6,12 +6,13 @@
 <template>
 	<table class="border">
 		<tbody>
-		<tr v-for="gear in listGear">
+		<tr v-for="gear in listGear" :key="gear.id">
 			<td>
 				{{ gear.name }}
 			</td>
 			<td class="right-align">
-				<button class="circle transparent medium-margin no-wave " v-if="gear.id === defaultGearId">
+				<button class="circle transparent medium-margin no-wave"
+				        v-if="gear.id === defaultGearId">
 					<i class="green-text">done_all</i>
 					<span class="tooltip fade tiny-gap">默认搜索引擎</span>
 				</button>

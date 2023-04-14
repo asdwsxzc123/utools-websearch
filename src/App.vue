@@ -25,40 +25,37 @@
 			           @click-mark-default-gear="clickMarkDefaultGear($event)"
 			           @click-delete-gear="clickDeleteGear($event)"/>
 		</main>
+	</div>
 
-		<div v-if="EnableDebug">
-			<div class="bold">
-				debug panel
-			</div>
-			<div>
-				code {{ UtoolsCode }}
-			</div>
-			<div>
-				payload {{ UtoolsPayload }}
-			</div>
-			<div>
-				isutools {{ isUtoolsContext }}
-			</div>
-		</div>
+	<div class="toast" :class="toastColor + ' ' + (toastActive ? 'active' : '')"
+	     id="panel-toast" @click="toastActive = false">
+		<i v-if="toastIcon.length">{{ toastIcon }}</i>
+		<span>{{ toastMsg }}</span>
 	</div>
 </template>
 
 <script setup>
 
-import {onMounted, ref, markRaw, toRaw} from 'vue'
+import {onMounted, ref, markRaw, toRaw, defineAsyncComponent} from 'vue'
 import {isUtoolsContext, AppVersion, EnableDebug, Database, Utools, Fs } from "@/components/context";
 const { outPlugin, onPluginEnter, shellOpenExternal, } = Utools
-import PanelOperation from "@/components/PanelOperation.vue";
-import ModalAbout from "@/components/ModalAbout.vue";
-import ModalGearEditor from "@/components/ModalGearEditor.vue";
-import ModalResetConfig from "@/components/ModalResetConfig.vue";
-import TableGear from "@/components/TableGear.vue";
+const PanelOperation = defineAsyncComponent(() => import("@/components/PanelOperation.vue"))
+const ModalAbout = defineAsyncComponent(() => import("@/components/ModalAbout.vue"))
+const ModalGearEditor = defineAsyncComponent(() => import("@/components/ModalGearEditor.vue"))
+const ModalResetConfig = defineAsyncComponent(() => import("@/components/ModalResetConfig.vue"))
+const TableGear = defineAsyncComponent(() => import("@/components/TableGear.vue"))
 
 Database.init()
 const config = ref(Database.getConfig())
 
 const UtoolsCode = ref('')
 const UtoolsPayload = ref('')
+
+function configUpdateSet()
+{
+	Database.setConfig(toRaw(config.value))
+	config.value = Database.getConfig()
+}
 
 function clickDeleteGear(gear)
 {
@@ -75,14 +72,12 @@ function clickDeleteGear(gear)
 	}
 	if(gearId === defaultGearId)
 		config.value.data.defaultGearId = listGear.length > 0 ? listGear[0].id : ''
-	const temp = toRaw(config.value)
-	Database.setConfig(toRaw(config.value))
+	configUpdateSet()
 }
 function clickMarkDefaultGear(gear)
 {
-	const gearId = gear.id
-	config.value.data.defaultGearId = gearId
-	Database.setConfig(toRaw(config.value))
+	config.value.data.defaultGearId = gear.id
+	configUpdateSet()
 }
 
 const editorGearId = ref('')
@@ -124,49 +119,79 @@ function onGearEditorConfirm(param)
 					gear.url = url
 				}
 			}
-			Database.setConfig(toRaw(config.value))
 			break
 	}
+	configUpdateSet()
 }
 
+const toastMsg = ref('')
+const toastIcon = ref('')
+const toastColor = ref('')
+const toastActive = ref(false)
+function toast({ icon = '', msg = '', color = '', timeout = 6000 })
+{
+	toastIcon.value = icon
+	toastMsg.value = msg
+	toastColor.value = color
+	toastActive.value = true
+	setTimeout(() => {
+		toastActive.value = false
+	}, timeout)
+}
+
+function importConfig(json)
+{
+	const defaultGearId = json.defaultGearId ?? ''
+	const listGear = []
+	if(json.listGear[Symbol.iterator]) for(const { id, name, url } of json.listGear)
+	{
+		if(id == null || name == null || url == null) continue
+		listGear.push({ id, name, url, })
+	}
+	config.value.data = { defaultGearId, listGear, }
+	configUpdateSet()
+}
 function clickImportConfig()
 {
-	const path = Fs.showOpenDialog({
-		title: '导入配置',
-		defaultPath: Fs.pathDefault,
-		filters: [ { name: 'JSON 配置文件', extensions: ['json'] } ],
-	})
-	if(path == null || path.trim().length <= 0) return
-	const raw = Fs.readFile(path, { encoding: 'utf8' })
 	try
 	{
+		const path = Fs.showOpenDialog({
+			title: '导入配置',
+			defaultPath: Fs.pathDefault,
+			filters: [ { name: 'JSON 配置文件', extensions: ['json'] } ],
+		})
+		if(path == null || path.length <= 0 || path[0].trim().length <= 0) return
+		const raw = Fs.readFile(path[0], { encoding: 'utf8' })
+
 		const configRaw = JSON.parse(raw)
-		const defaultGearId = configRaw.defaultGearId ?? ''
-		const listGear = []
-		if(configRaw.listGear[Symbol.iterator]) for(const { id, name, url } of configRaw.listGear)
-		{
-			if(id == null || name == null || url == null) continue
-			listGear.push({ id, name, url, })
-		}
-		config.value.defaultGearId = defaultGearId
-		config.value.listGear = listGear
-		Database.setConfig(toRaw(config.value))
+		importConfig(configRaw)
+		toast({ icon: 'check', msg: '读取配置完成', color: 'green' })
 	}
 	catch (any)
 	{
-		console.error('读取配置错误', any)
+		toast({ icon: 'warning',  msg: '读取配置错误' + any, color: 'orange' })
 	}
 }
 function clickExportConfig()
 {
+	console.log('Fs', Fs)
 	const path = Fs.showSaveDialog({
 		title: '导出配置',
 		defaultPath: Fs.pathDefault,
 		filters: [ { name: 'JSON 配置文件', extensions: ['json'] } ],
 	})
 	if(path == null || path.trim().length <= 0) return
-	const config = Database.getConfig()
-	Fs.writeFile(path, JSON.stringify(config, null, 2), { encoding: 'utf8' })
+	try
+	{
+		if(Fs.existFile(path)) Fs.deleteFile(path)
+		const config = Database.getConfig().data
+		Fs.writeFile(path, JSON.stringify(config, null, 2), { encoding: 'utf8' })
+		toast({ icon: 'check', msg: '导出配置完成', color: 'green' })
+	}
+	catch (any)
+	{
+		toast({ icon: 'warning',  msg: '导出配置错误' + any, color: 'orange' })
+	}
 }
 function clickResetConfig()
 {

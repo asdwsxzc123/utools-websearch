@@ -10,15 +10,15 @@
 		<div class="large-text">插件配置</div>
 		<div class="small-space"></div>
 		<div>
-			<button class="small no-margin secondary" @click="configExport()">
+			<button class="small no-margin secondary small-elevate" @click="configExport()">
 				<i>upload</i>
 				导出
 			</button>
-			<button class="small secondary" @click="configImport()">
+			<button class="small secondary small-elevate" @click="configImport()">
 				<i>download</i>
 				导入
 			</button>
-			<button class="small no-margin tertiary"
+			<button class="small no-margin tertiary small-elevate"
 			        data-ui="#modal-reset-config">
 				<i>settings_backup_restore</i>
 				重置
