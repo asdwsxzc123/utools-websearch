@@ -174,7 +174,6 @@ function clickImportConfig()
 }
 function clickExportConfig()
 {
-	console.log('Fs', Fs)
 	const path = Fs.showSaveDialog({
 		title: '导出配置',
 		defaultPath: Fs.pathDefault,
@@ -198,6 +197,7 @@ function clickResetConfig()
 	Database.clear()
 	Database.init()
 	config.value = Database.getConfig()
+	toast({ icon: 'check', msg: '重置配置完成', color: 'green' })
 }
 
 onMounted(() => {

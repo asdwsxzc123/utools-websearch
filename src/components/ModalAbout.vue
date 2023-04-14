@@ -3,8 +3,8 @@
 </style>
 
 <template>
-	<div class="modal large center-align"
-	     style="height: 280px; min-height: 280px;" id="modal-about">
+	<div class="modal active large center-align"
+	     style="height: 295px; min-height: 295px;" id="modal-about">
 		<h5>𫟼齿轮</h5>
 		<div class="space"></div>
 		<div class="large-text">插件配置</div>
@@ -43,10 +43,13 @@
 		</div>
 		<div class="tiny-space"></div>
 		<div>
+			open source under GPLv3 license
+		</div>
+		<div class="tiny-margin">
 			<a :href="AppHomepage"
 			   @click.prevent="goGithub()"
 			   class="link">
-				open source on GitHub&ensp;<i class="tiny">open_in_new</i>
+				view or submit issues on GitHub&ensp;<i class="tiny">open_in_new</i>
 			</a>
 		</div>
 	</div>
