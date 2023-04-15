@@ -3,7 +3,7 @@
 </style>
 
 <template>
-	<div class="modal active large center-align"
+	<div class="modal large center-align"
 	     style="height: 295px; min-height: 295px;" id="modal-about">
 		<h5>𫟼齿轮</h5>
 		<div class="space"></div>
