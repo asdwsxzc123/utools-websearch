@@ -180,15 +180,15 @@ function clickResetConfig() {
 }
 
 onMounted(() => {
-	const { defaultGearId, listGear, } = config.value.data
-	const map = listGear.reduce((total,cur) => {
-		return {...total,
-			[cur.id]: cur
-		}
-	},{})
 	Utools?.onPluginEnter(({ code, payload }) => {
 		UtoolsCode.value = code
 		UtoolsPayload.value = payload
+		const { defaultGearId, listGear, } = config.value.data
+		const map = listGear.reduce((total,cur) => {
+			return {...total,
+				[cur.id]: cur
+			}
+		},{})
 		console.log(payload,defaultGearId)
 		switch (code) {
 			case 'search-by-default':
