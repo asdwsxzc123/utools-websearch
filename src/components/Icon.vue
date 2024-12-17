@@ -4,7 +4,7 @@
 
 <template>
 	<img class="ds-icon"
-	     src="/darmstadtium-gear-icon.svg"
+	     src="/logo.svg"
 	     style="animation: glowing 4s infinite, rotate 28s infinite linear;"
 	     alt="icon" :style="styleIcon">
 </template>

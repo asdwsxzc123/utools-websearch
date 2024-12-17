@@ -47,7 +47,7 @@ const gearUrl = ref('')
 
 function fillExample()
 {
-	gearName.value = 'Google'
+	gearName.value = 'google'
 	gearUrl.value = 'https://www.google.com/search?q={KEYWORD}'
 }
 

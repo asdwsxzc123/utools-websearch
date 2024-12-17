@@ -1,20 +1,23 @@
 {
   "main": "index.html",
-  "logo": "darmstadtium-gear-icon.png",
   "preload": "preload.js",
+  "name": "websearch",
+  "version": "1.0.0",
+  "pluginName": "web-search",
+  "description": "支持web查询，类似alfred websearch,基于DarmstadtiumGear开发的",
+  "logo": "logo.png",
 
   "development": {
-    "main": "http://localhost:5173/"
+    "main": "http://127.0.0.1:5173/index.html"
   },
-
   "features": [
     {
       "code": "search-by-default",
-      "explain": "使用默认搜索引擎, 搜索指定关键字",
+      "explain": "搜索指定关键字，name:xxx，匹配name搜索引擎，搜索xxx内容",
       "cmds": [
         {
           "type": "over",
-          "label": "直接搜索",
+          "label": "搜索",
           "match": "*",
           "minLength": 1,
           "maxLength": 128
@@ -25,18 +28,9 @@
       "code": "search-config",
       "explain": "配置搜索引擎列表",
       "cmds": [
-        {
-          "type": "over",
-          "label": "配置\uD86D\uDFFC齿轮",
-          "match": "config",
-          "minLength": 6,
-          "maxLength": 12
-        }
+        "config"
       ]
     }
-  ],
+  ]
 
-  "pluginSetting": {
-    "single": true
-  }
 }

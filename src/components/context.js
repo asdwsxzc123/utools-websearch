@@ -14,7 +14,7 @@ const EmptyFunction = () => {
 
 /*
 数据库里就一个 doc
-key 是 darmstadtium-gear-config
+key 是 websearch-config
 value 结构是
 {
     "defaultGearId": "123",
@@ -33,7 +33,7 @@ const dbGetAll = isUtoolsContext ? WindowDatabaseApi.dbGetAll : EmptyFunction
 const dbPut = isUtoolsContext ? WindowDatabaseApi.dbPut : EmptyFunction
 const dbRemove = isUtoolsContext ? WindowDatabaseApi.dbRemove : EmptyFunction
 
-const Key = 'darmstadtium-gear-config'
+const Key = 'websearch-config'
 
 export const Database = {
     getConfig()
@@ -59,31 +59,36 @@ export const Database = {
         dbPut({
             _id: Key,
             data: {
-                defaultGearId: 'bing',
+                defaultGearId: 'google',
                 listGear: [
                     {
                         id: 'google',
-                        name: 'Google',
+                        name: 'google',
                         url: 'https://www.google.com/search?q={KEYWORD}',
                     },
                     {
+                        id: 'github',
+                        name: 'github',
+                        url: 'https://github.com/search?q={KEYWORD}&ref=opensearch',
+                    },
+                    {
+                        id: 'npm',
+                        name: 'npm',
+                        url: 'https://www.npmjs.com/search?q={KEYWORD}',
+                    },
+                    {
                         id: 'bing',
-                        name: 'Bing',
+                        name: 'bing',
                         url: 'https://www.bing.com/search?q={KEYWORD}',
                     },
                     {
                         id: 'baidu',
-                        name: 'Baidu',
+                        name: 'baidu',
                         url: 'https://www.baidu.com/s?wd={KEYWORD}',
                     },
                     {
-                        id: 'github',
-                        name: 'GitHub',
-                        url: 'https://github.com/search?q={KEYWORD}&ref=opensearch',
-                    },
-                    {
-                        id: 'wikipedia',
-                        name: 'WikiPedia',
+                        id: 'wiki',
+                        name: 'wiki',
                         url: 'https://zh.wikipedia.org/w/index.php?title=Special:搜索&search={KEYWORD}',
                     }
                 ],
