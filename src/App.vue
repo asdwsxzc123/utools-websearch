@@ -218,7 +218,7 @@ function onEnterSearchTip() {
 	// 显示
 	utools?.setSubInput(({ text }) => {
 		inputValue.value = text
-	}, '输入KEYWORD,然后选择引擎');
+	}, '输入query的内容,然后选择引擎');
 
 	document.addEventListener('keydown', onKeyDown)
 
