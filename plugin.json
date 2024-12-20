@@ -25,6 +25,14 @@
       ]
     },
     {
+      "code": "search-tip",
+      "explain": "搜索提示",
+      "mainPush":false,
+      "cmds": [
+        "tip"
+      ]
+    },
+    {
       "code": "search-config",
       "explain": "配置搜索引擎列表",
       "cmds": [

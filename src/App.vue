@@ -17,7 +17,14 @@
 				@click-delete-gear="clickDeleteGear($event)" />
 		</main>
 	</div>
-
+	<!-- <div class="fill"> -->
+	<div class="fill" v-else-if="!isUtoolsContext || UtoolsCode === 'search-tip'">
+		<main class="responsive">
+			<TableGear :list-gear="config.data.listGear" :is-tip="true" :default-gear-id="config.data.defaultGearId"
+				@click-edit-gear="clickEditGear($event)" @click-mark-default-gear="clickMarkDefaultGear($event)"
+				@click-delete-gear="clickDeleteGear($event)" @click-tip-gear="onClickTipGear($event)" />
+		</main>
+	</div>
 	<div class="toast" :class="toastColor + ' ' + (toastActive ? 'active' : '')" id="panel-toast"
 		@click="toastActive = false">
 		<i v-if="toastIcon.length">{{ toastIcon }}</i>
@@ -40,7 +47,9 @@ Database.init()
 const config = ref(Database.getConfig())
 
 const UtoolsCode = ref('')
+const inputValue = ref('')
 const UtoolsPayload = ref('')
+const searchKeyMap = ref({})
 
 function configUpdateSet() {
 	Database.setConfig(toRaw(config.value))
@@ -60,6 +69,10 @@ function clickDeleteGear(gear) {
 	if (gearId === defaultGearId)
 		config.value.data.defaultGearId = listGear.length > 0 ? listGear[0].id : ''
 	configUpdateSet()
+}
+function onClickTipGear(gear) {
+	const gearName = gear.name
+	toWebSite(toRaw(searchKeyMap.value)[gearName]?.url, gearName)
 }
 function clickMarkDefaultGear(gear) {
 	config.value.data.defaultGearId = gear.id
@@ -84,7 +97,7 @@ function clickAddGear() {
 function onGearEditorConfirm(param) {
 	const { method, id, name, url } = param
 	const listGear = config.value.data.listGear
-	const hasName = listGear.find(i =>i.name === name)
+	const hasName = listGear.find(i => i.name === name)
 	if (hasName) return
 	switch (method) {
 		case 'add':
@@ -178,27 +191,61 @@ function clickResetConfig() {
 	config.value = Database.getConfig()
 	toast({ icon: 'check', msg: '重置配置完成', color: 'green' })
 }
+function getSubInputValue() {
+	return utools?.getSubInputValue?.()
+}
+/**
+ *
+ * @param url 地址
+ * @param payload 值
+ */
+function toWebSite(url, payload) {
+	if (!url) return
+	Utools.shellOpenExternal(url.replace(/{KEYWORD}/g, payload))
+	Utools.outPlugin()
+}
 
+function onKeyDown(e) {
+	// 需要减1
+	const num = Number(e.key)
+	if (e.ctrlKey && !isNaN(num)) {
+		const value = getSubInputValue()
+		const list = getListGear()
+		toWebSite(list[num - 1]?.url, inputValue.value)
+	}
+}
+function onEnterSearchTip() {
+	// 显示
+	utools?.setSubInput(({ text }) => {
+		inputValue.value = text
+	}, '输入KEYWORD,然后选择引擎');
+
+	document.addEventListener('keydown', onKeyDown)
+
+}
+function getListGear() {
+	return [...config.value.data?.listGear]
+}
 onMounted(() => {
+	onEnterSearchTip()
 	Utools?.onPluginEnter(({ code, payload }) => {
 		UtoolsCode.value = code
 		UtoolsPayload.value = payload
 		const { defaultGearId, listGear, } = config.value.data
-		const map = listGear.reduce((total,cur) => {
-			return {...total,
+		const map = listGear.reduce((total, cur, index) => {
+			return {
+				...total,
 				[cur.id]: cur
 			}
-		},{})
-		console.log(payload,defaultGearId)
+		}, {})
+		searchKeyMap.value = map
 		switch (code) {
 			case 'search-by-default':
-
 				if (defaultGearId !== '') {
 					const defaultSearch = map[defaultGearId]
 					const keys = payload.split(':')
 					const key = keys[0]
 					const item = map[key]
-					console.log(item)
 					if (item) {
 						Utools.shellOpenExternal(item.url.replace(/{KEYWORD}/g, keys.slice(1).join(':').trim()))
 					} else {
@@ -208,9 +255,9 @@ onMounted(() => {
 				Utools.outPlugin()
 				break
 
-			// case 'search-by-select':
-			// 	// 显示
-			// 	break
+			case 'search-tip':
+				onEnterSearchTip()
+				break
 
 			case 'search-config':
 				break
@@ -220,6 +267,9 @@ onMounted(() => {
 				outPlugin()
 				break
 		}
+	})
+	utools.onPluginOut(() => {
+		document.removeEventListener('keydown', onKeyDown)
 	})
 })
 

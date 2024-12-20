@@ -1,3 +1,7 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
 @keyframes glowing {
     0% { filter: brightness(100%); }
     50% { filter: brightness(130%); }
