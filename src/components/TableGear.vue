@@ -28,6 +28,16 @@
 						<span class="tooltip fade tiny-gap">删除</span>
 					</button>
 				</td>
+				<td class="right-align" v-if="isTip">
+					<button class="circle transparent " @click.stop="clickMoveGear({ gear, index, type: 'up' })">
+						<i class=" blue-grey-text">^</i>
+						<span class="tooltip fade tiny-gap">上移</span>
+					</button>
+					<button class="circle transparent " @click.stop="clickMoveGear({ gear, index, type: 'down' })">
+						<i class=" blue-grey-text" style="transform: rotate(180deg);">^</i>
+						<span class="tooltip fade tiny-gap">下移</span>
+					</button>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -49,11 +59,11 @@ const emits = defineEmits([
 ])
 function clickEditGear(gear) { emits('click-edit-gear', gear) }
 function clickDeleteGear(gear) { emits('click-delete-gear', gear) }
+function clickMoveGear(obj) { emits('click-move-gear', obj) }
 function clickTipGear(gear) {
 	emits('click-tip-gear', gear)
 }
 function clickMarkDefaultGear(gear) {
-
 	emits('click-mark-default-gear', gear)
 }
 

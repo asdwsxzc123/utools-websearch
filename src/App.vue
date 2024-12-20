@@ -18,11 +18,13 @@
 		</main>
 	</div>
 	<!-- <div class="fill"> -->
+	<!-- tip -->
 	<div class="fill" v-else-if="!isUtoolsContext || UtoolsCode === 'search-tip'">
 		<main class="responsive">
 			<TableGear :list-gear="config.data.listGear" :is-tip="true" :default-gear-id="config.data.defaultGearId"
 				@click-edit-gear="clickEditGear($event)" @click-mark-default-gear="clickMarkDefaultGear($event)"
-				@click-delete-gear="clickDeleteGear($event)" @click-tip-gear="onClickTipGear($event)" />
+				@click-delete-gear="clickDeleteGear($event)" @click-tip-gear="onClickTipGear($event)"
+				@click-move-gear="clickMoveGear($event)" />
 		</main>
 	</div>
 	<div class="toast" :class="toastColor + ' ' + (toastActive ? 'active' : '')" id="panel-toast"
@@ -72,7 +74,19 @@ function clickDeleteGear(gear) {
 }
 function onClickTipGear(gear) {
 	const gearName = gear.name
-	toWebSite(toRaw(searchKeyMap.value)[gearName]?.url, gearName)
+	toWebSite(toRaw(searchKeyMap.value)[gearName]?.url)
+}
+function clickMoveGear({ gear, index, type }) {
+	const isDown = type === 'down'
+	// const isUp = type === 'up'
+	const listGear = config.value.data.listGear
+	const len = listGear.length
+	if (isDown) {
+		if (index !== len - 1) [listGear[index + 1], listGear[index]] = [listGear[index], listGear[index + 1]]
+	} else {
+		if (index !== 0) [listGear[index - 1], listGear[index]] = [listGear[index], listGear[index - 1]]
+	}
+	configUpdateSet()
 }
 function clickMarkDefaultGear(gear) {
 	config.value.data.defaultGearId = gear.id
@@ -197,11 +211,10 @@ function getSubInputValue() {
 /**
  *
  * @param url 地址
- * @param payload 值
  */
-function toWebSite(url, payload) {
+function toWebSite(url) {
 	if (!url) return
-	Utools.shellOpenExternal(url.replace(/{KEYWORD}/g, payload))
+	Utools.shellOpenExternal(url.replace(/{KEYWORD}/g, inputValue.value))
 	Utools.outPlugin()
 }
 
@@ -209,9 +222,8 @@ function onKeyDown(e) {
 	// 需要减1
 	const num = Number(e.key)
 	if (e.ctrlKey && !isNaN(num)) {
-		const value = getSubInputValue()
 		const list = getListGear()
-		toWebSite(list[num - 1]?.url, inputValue.value)
+		toWebSite(list[num - 1]?.url)
 	}
 }
 function onEnterSearchTip() {
