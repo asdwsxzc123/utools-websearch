@@ -72,43 +72,41 @@ export const Database = {
           {
             id: 'github',
             name: 'github',
-            // remark: 'github search',
             url: `https://github.com/search?q={${QUERY_KEY}}&ref=opensearch`,
           },
           {
             id: 'pack',
             name: 'pack',
-            // remark: 'npm package',
             url: `https://www.npmjs.com/package/{${QUERY_KEY}}`,
           },
           {
             id: 'npm',
             name: 'npm',
-            // remark: 'npm search',
             url: `https://www.npmjs.com/search?q={${QUERY_KEY}}`,
+          },
+          {
+            id: 'caniuse',
+            name: 'caniuse',
+            url: `https://caniuse.com/?search={${QUERY_KEY}}`,
           },
           {
             id: 'k8s',
             name: 'k8s',
-            // remark: 'dev k8s',
             url: `http://{${QUERY_KEY}}.k8s-uat-internal.ewinlu.com`,
           },
           {
             id: 'google',
             name: 'google',
-            // remark: 'google search',
             url: `https://www.google.com/search?q={${QUERY_KEY}}`,
           },
           {
             id: 'baidu',
             name: 'baidu',
-            // remark: 'baidu search',
             url: `https://www.baidu.com/s?wd={${QUERY_KEY}}`,
           },
           {
             id: 'docker',
             name: 'docker',
-            // remark: 'docker hub search',
             url: `https://hub.docker.com/search?q={${QUERY_KEY}}`,
           },
         ],

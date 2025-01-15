@@ -62,9 +62,10 @@
 import { Database, isUtoolsContext, Utools } from '@/components/context'
 import { QUERY_KEY } from '@/constant/index.js'
 import { useConfig } from '@/hooks/useConfig.js'
+import { useTips } from '@/hooks/useTips.js'
 import { useToast } from '@/hooks/useToast.js'
 import { useTools } from '@/hooks/useTools.js'
-import { defineAsyncComponent, onMounted, ref, toRaw } from 'vue'
+import { defineAsyncComponent, onMounted } from 'vue'
 const { toast, toastMsg, toastIcon, toastColor, toastActive } = useToast()
 const ModalAbout = defineAsyncComponent(
 	() => import('@/components/ModalAbout.vue'),
@@ -75,11 +76,9 @@ const ModalGearEditor = defineAsyncComponent(
 const TableGear = defineAsyncComponent(
 	() => import('@/components/TableGear.vue'),
 )
-const searchKeyMap = ref({})
 const {
 	config,
 	UtoolsCode,
-	inputValue,
 	UtoolsPayload,
 	configUpdateSet,
 	editorGearId,
@@ -89,117 +88,28 @@ const {
 	clickAddGear,
 	clickDeleteGear,
 	clickMarkDefaultGear,
+	onGearEditorConfirm,
 } = useTools(Database)
 const { clickResetConfig, clickImportConfig, clickExportConfig } = useConfig({
 	config,
 	configUpdateSet,
 	toast,
 })
+const {
+	searchKeyMap,
+	onEnterSearchTip,
+	clickMoveGear,
+	onClickTipGear,
+	onKeyDown,
+} = useTips({ config, configUpdateSet })
 
-function onGearEditorConfirm(param) {
-	const { method, id, name, url } = param
-	const listGear = config.value.data.listGear
-	const hasName = listGear.find((i) => i.name === name)
-	if (hasName) return
-	switch (method) {
-		case 'add':
-			listGear.push({
-				id: name,
-				name,
-				url,
-			})
-			break
-		case 'edit':
-			for (let gear of listGear) {
-				if (gear.id === id) {
-					gear.name = name
-					gear.url = url
-				}
-			}
-			break
-		default:
-			listGear.push({
-				id: name,
-				name,
-				url,
-			})
-			break
-	}
-	configUpdateSet()
-}
-function clickMoveGear({ index, type }) {
-	const isDown = type === 'down'
-	// const isUp = type === 'up'
-	const listGear = config.value.data.listGear
-	const len = listGear.length
-	if (isDown) {
-		if (index !== len - 1)
-			[listGear[index + 1], listGear[index]] = [
-				listGear[index],
-				listGear[index + 1],
-			]
-	} else {
-		if (index !== 0)
-			[listGear[index - 1], listGear[index]] = [
-				listGear[index],
-				listGear[index - 1],
-			]
-	}
-	configUpdateSet()
-}
-/** 添加跳转tips */
-function onClickTipGear(gear) {
-	const gearName = gear.name
-	toWebSite(toRaw(searchKeyMap.value)[gearName]?.url)
-}
-/**
- *
- * @param url 地址
- */
-function toWebSite(url) {
-	if (!url) return
-	const regex = new RegExp(`{${QUERY_KEY}}`, 'g')
-	Utools.shellOpenExternal(url.replace(regex, inputValue.value))
-	Utools.outPlugin()
-}
-
-/**
- * 监听keydown,用于选择tips的引擎打开或者直接使用默认引擎
- * @param e
- */
-function onKeyDown(e) {
-	// 需要减1
-	const num = Number(e.key)
-	if (e.ctrlKey && !isNaN(num)) {
-		const list = getListGear()
-		toWebSite(list[num - 1]?.url)
-	}
-	// 支持直接使用默认引擎
-	if (e.key === 'Enter') {
-		const { defaultGearId, listGear } = config.value.data
-		const item = listGear.find((i) => i.id === defaultGearId)
-		toWebSite(item.url)
-	}
-}
-
-function onEnterSearchTip() {
-	// 显示
-	utools?.setSubInput(({ text }) => {
-		inputValue.value = text
-	}, '输入query的内容,然后选择引擎')
-
-	document.addEventListener('keydown', onKeyDown)
-}
-function getListGear() {
-	return [...config.value.data?.listGear]
-}
 onMounted(() => {
 	onEnterSearchTip()
 	Utools?.onPluginEnter(({ code, payload }) => {
 		UtoolsCode.value = code
 		UtoolsPayload.value = payload
 		const { defaultGearId, listGear } = config.value.data
-		const map = listGear.reduce((total, cur, index) => {
+		const map = listGear.reduce((total, cur) => {
 			return {
 				...total,
 				[cur.id]: cur,
@@ -210,17 +120,17 @@ onMounted(() => {
 			case 'search-by-default':
 				if (defaultGearId !== '') {
 					const defaultSearch = map[defaultGearId]
+					const regex = new RegExp(`{${QUERY_KEY}}`, 'g')
+					// TODO: 使用冒号分割的方式不好用,基本废弃
 					const keys = payload.split(':')
 					const key = keys[0]
 					const item = map[key]
 					if (item) {
 						Utools.shellOpenExternal(
-							item.url.replace(/{KEYWORD}/g, keys.slice(1).join(':').trim()),
+							item.url.replace(regex, keys.slice(1).join(':').trim()),
 						)
 					} else {
-						Utools.shellOpenExternal(
-							defaultSearch.url.replace(/{KEYWORD}/g, payload),
-						)
+						Utools.shellOpenExternal(defaultSearch.url.replace(regex, payload))
 					}
 				}
 				Utools.outPlugin()
@@ -239,7 +149,7 @@ onMounted(() => {
 				break
 		}
 	})
-	utools.onPluginOut(() => {
+	window.utools.onPluginOut(() => {
 		document.removeEventListener('keydown', onKeyDown)
 	})
 })

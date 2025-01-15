@@ -9,7 +9,6 @@ export function useTools(Database) {
 	Database.init()
 	const config = ref(Database.getConfig())
 	const UtoolsCode = ref('')
-	const inputValue = ref('')
 	const UtoolsPayload = ref('')
 	const editorGearId = ref('')
 	const editorMethod = ref('')
@@ -50,11 +49,40 @@ export function useTools(Database) {
 		config.value.data.defaultGearId = gear.id
 		configUpdateSet()
 	}
-
+	function onGearEditorConfirm(param) {
+		const { method, id, name, url } = param
+		const listGear = config.value.data.listGear
+		const hasName = listGear.find((i) => i.name === name)
+		if (hasName) return
+		switch (method) {
+			case 'add':
+				listGear.push({
+					id: name,
+					name,
+					url,
+				})
+				break
+			case 'edit':
+				for (let gear of listGear) {
+					if (gear.id === id) {
+						gear.name = name
+						gear.url = url
+					}
+				}
+				break
+			default:
+				listGear.push({
+					id: name,
+					name,
+					url,
+				})
+				break
+		}
+		configUpdateSet()
+	}
 	return {
 		config,
 		UtoolsCode,
-		inputValue,
 		UtoolsPayload,
 		editorGearId,
 		editorMethod,
@@ -64,5 +92,6 @@ export function useTools(Database) {
 		clickAddGear,
 		clickDeleteGear,
 		clickMarkDefaultGear,
+		onGearEditorConfirm,
 	}
 }
