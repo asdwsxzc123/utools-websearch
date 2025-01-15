@@ -1,8 +1,10 @@
+/* eslint-disable no-undef */
 export const isUtoolsContext =
   typeof WindowDatabaseApi !== 'undefined' &&
   typeof WindowUtoolsApi !== 'undefined';
 
 import p from '../../package.json';
+import { QUERY_KEY } from '../constant/index';
 export const AppVersion = p.version;
 export const AppHomepage = p.homepage;
 
@@ -15,7 +17,7 @@ const EmptyFunction = () => {
 
 /*
 数据库里就一个 doc
-key 是 websearch-config
+key 是 web search-config
 value 结构是
 {
     "defaultGearId": "123",
@@ -34,7 +36,7 @@ const dbGetAll = isUtoolsContext ? WindowDatabaseApi.dbGetAll : EmptyFunction;
 const dbPut = isUtoolsContext ? WindowDatabaseApi.dbPut : EmptyFunction;
 const dbRemove = isUtoolsContext ? WindowDatabaseApi.dbRemove : EmptyFunction;
 
-const Key = 'websearch-config';
+const Key = 'web-search-config';
 
 export const Database = {
   getConfig() {
@@ -66,48 +68,50 @@ export const Database = {
       _id: Key,
       data: {
         defaultGearId: 'google',
-        listGear:  [
+        listGear: [
           {
-            "id": "google",
-            "name": "google",
-            "url": "https://www.google.com/search?q={KEYWORD}"
+            id: 'github',
+            name: 'github',
+            // remark: 'github search',
+            url: `https://github.com/search?q={${QUERY_KEY}}&ref=opensearch`,
           },
           {
-            "id": "github",
-            "name": "github",
-            "url": "https://github.com/search?q={KEYWORD}&ref=opensearch&type=repositories"
+            id: 'pack',
+            name: 'pack',
+            // remark: 'npm package',
+            url: `https://www.npmjs.com/package/{${QUERY_KEY}}`,
           },
           {
-            "id": "npm",
-            "name": "npm",
-            "url": "https://www.npmjs.com/search?q={KEYWORD}"
+            id: 'npm',
+            name: 'npm',
+            // remark: 'npm search',
+            url: `https://www.npmjs.com/search?q={${QUERY_KEY}}`,
           },
           {
-            "id": "bing",
-            "name": "bing",
-            "url": "https://www.bing.com/search?q={KEYWORD}"
+            id: 'k8s',
+            name: 'k8s',
+            // remark: 'dev k8s',
+            url: `http://{${QUERY_KEY}}.k8s-uat-internal.ewinlu.com`,
           },
           {
-            "id": "baidu",
-            "name": "baidu",
-            "url": "https://www.baidu.com/s?wd={KEYWORD}"
+            id: 'google',
+            name: 'google',
+            // remark: 'google search',
+            url: `https://www.google.com/search?q={${QUERY_KEY}}`,
           },
           {
-            "id": "wiki",
-            "name": "wiki",
-            "url": "https://zh.wikipedia.org/w/index.php?title=Special:搜索&search={KEYWORD}"
+            id: 'baidu',
+            name: 'baidu',
+            // remark: 'baidu search',
+            url: `https://www.baidu.com/s?wd={${QUERY_KEY}}`,
           },
           {
-            "id": "docker",
-            "name": "docker",
-            "url": "https://hub.docker.com/search?q={KEYWORD}"
+            id: 'docker',
+            name: 'docker',
+            // remark: 'docker hub search',
+            url: `https://hub.docker.com/search?q={${QUERY_KEY}}`,
           },
-          {
-            "id": "pack",
-            "name": "pack",
-            "url": "https://www.npmjs.com/package/{KEYWORD}"
-          },
-        ]
+        ],
       },
     });
   },
