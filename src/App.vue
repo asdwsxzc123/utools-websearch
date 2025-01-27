@@ -12,7 +12,6 @@
 			@click-import="clickImportConfig()"
 			@click-export="clickExportConfig()"
 		/>
-
 		<ModalGearEditor
 			:editor-method="editorMethod"
 			:gear-id="editorGearId"

@@ -1,7 +1,7 @@
 <style scoped></style>
 
 <template>
-	<div class="modal large" id="modal-gear-editor">
+	<div class="modal large" id="modal-gear-editor" style="padding: 10px;">
 		<h5>{{ editorMethod === 'edit' ? '编辑' : '添加' }}</h5>
 
 		<div class="field label border" :class="isNameInvalid ? 'invalid' : ''">
@@ -28,7 +28,7 @@
 				填充示例
 			</button>
 			<button data-ui="#modal-gear-editor" class="small-elevate" :disabled="isNameInvalid || isUrlInvalid"
-				@click="confirmClick">确定</button>
+				@click="confirmClick">保存</button>
 		</nav>
 	</div>
 </template>
